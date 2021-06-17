@@ -17,10 +17,12 @@ public class UFO : MonoBehaviour
   Rigidbody2D rb;
   PlayerController player;
   AudioSource audioSource;
+  Weapon weapon;
 
   private void Start() {
     rb = GetComponent<Rigidbody2D>();
     audioSource = GetComponent<AudioSource>();
+    weapon = GetComponent<Weapon>();
     player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     ufoSpeed = Screen.width / 100f / 10f;
     Invoke("Spawn", Random.Range(spawnRateFloor, spawnRateCeil));
@@ -65,17 +67,13 @@ public class UFO : MonoBehaviour
     canShoot = false;
     float randomShotDelay = Random.Range(2f, 5.1f);
 
-    GameObject bullet = ObjectPool.SharedInstance.GetPooledObject("Bullets");
+    audioSource.PlayOneShot(ufoShootSound);
 
-    if (bullet != null)
-    {
-      bullet.GetComponent<SpriteRenderer>().color = Color.red;
-      audioSource.PlayOneShot(ufoShootSound);
-      bullet.SetActive(true);
-      bullet.transform.position = transform.position + (player.transform.position - gameObject.transform.position).normalized;
-      bullet.GetComponent<Rigidbody2D>().velocity = (player.transform.position - bullet.transform.position).normalized * bulletSpeed;
-      StartCoroutine(DisableBullet(bullet));
-    }
+    Vector3 origin = transform.position + (player.transform.position - gameObject.transform.position).normalized;
+    Vector2 velocity = (player.transform.position - origin).normalized * bulletSpeed;
+    Color color = Color.red;
+
+    weapon.ShootBullet(origin, velocity, color);
 
     yield return new WaitForSeconds(randomShotDelay);
     canShoot = true;
@@ -93,11 +91,11 @@ public class UFO : MonoBehaviour
       StartCoroutine(ShootAtPlayer());
     }
     if (isAlive) {
-      FlewAway();
+      FlyAway();
     }
   }
 
-private void FlewAway() {
+private void FlyAway() {
     Vector3 currentViewportPosition = Camera.main.WorldToViewportPoint(transform.position);
     if (currentViewportPosition.x > 1 || currentViewportPosition.x < 0) {
       EnableUfo(false);

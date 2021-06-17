@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7116988542911402688}
   - component: {fileID: 7116988542911402695}
   - component: {fileID: 7116988542911402694}
+  - component: {fileID: 6695597996387364713}
   m_Layer: 0
   m_Name: UFO
   m_TagString: Untagged
@@ -99,8 +100,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7748685f45c364bb3abf22edcad666, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnRateCeil: 40
-  spawnRateFloor: 20
+  spawnRateCeil: 20
+  spawnRateFloor: 40
   bulletSpeed: 7
   deathSound: {fileID: 8300000, guid: c41404898898c90449d6f76765dcdad8, type: 3}
   ufoShootSound: {fileID: 8300000, guid: 3f6bc2247c73f7647affa209bcf0600d, type: 3}
@@ -247,3 +248,15 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6695597996387364713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7116988542911402748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1acba603df5b0dc41acdac6b6192c50d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
