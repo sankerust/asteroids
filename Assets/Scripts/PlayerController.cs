@@ -23,12 +23,14 @@ public class PlayerController : MonoBehaviour
   
   Rigidbody2D rb;
   AudioSource audioSource;
+  Weapon weapon;
   
 
   void Start()
   {
     rb = GetComponent<Rigidbody2D>();
     audioSource = GetComponent<AudioSource>();
+    weapon = GetComponent<Weapon>();
     lifesLeft = 3;
     score = 0;
     lifesLeftText.text = "Lifes left: " + lifesLeft;
@@ -80,38 +82,29 @@ public class PlayerController : MonoBehaviour
     if (controlScheme == 0) {
       if (Input.GetKeyDown(KeyCode.Space))
       {
-        ShootBullet();
+        Shoot();
       }
     }
     
     if (controlScheme == 1) {
       if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
       {
-        ShootBullet();
+        Shoot();
       }
     }
   }
 
-  private void ShootBullet()
+  private void Shoot()
   {
     lastShotTime = Time.time;
     shotsMade++;
-    GameObject bullet = ObjectPool.SharedInstance.GetPooledObject("Bullets");
-    if (bullet != null)
-    {
+    Vector3 origin = transform.position + transform.up;
+    Vector2 velocity = transform.TransformDirection(Vector2.up * bulletSpeed);
+    Debug.Log(velocity.magnitude);
+    Color color = Color.green;
 
-      audioSource.PlayOneShot(shootSound);
-      bullet.GetComponent<SpriteRenderer>().color = Color.green;
-      bullet.SetActive(true);
-      bullet.transform.position = transform.position + transform.up;
-      bullet.GetComponent<Rigidbody2D>().velocity = transform.TransformDirection(Vector2.up * bulletSpeed);
-      Debug.Log(bullet.GetComponent<Rigidbody2D>().velocity.magnitude);
-
-      if (bullet.activeInHierarchy)
-      {
-        StartCoroutine(DisableBullet(bullet));
-      }
-    }
+    audioSource.PlayOneShot(shootSound);
+    weapon.ShootBullet(origin, velocity, color);
   }
 
   private IEnumerator reloadMag()
@@ -120,14 +113,6 @@ public class PlayerController : MonoBehaviour
     shotsMade = 0;
     yield return new WaitForSeconds(1f);
     canShoot = true;
-  }
-
-  public IEnumerator DisableBullet(GameObject bullet)
-  {
-    float lifeTime = Screen.width / bullet.GetComponent<Rigidbody2D>().velocity.magnitude / 100f;
-    yield return new WaitForSeconds(lifeTime);
-    bullet.SetActive(false);
-    ObjectPool.SharedInstance.ReturnToPool("Bullets", bullet);
   }
 
   private void Rotate()

@@ -12,42 +12,40 @@ public class Asteroid : MonoBehaviour
 
   void Start()
   {
-    asteroidSpawner = GameObject.FindWithTag("Spawner").GetComponent<AsteroidSpawner>();
+    asteroidSpawner = GameObject.FindWithTag("GameController").GetComponent<AsteroidSpawner>();
     player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     rb = GetComponent<Rigidbody2D>();
   }
 
-  private void OnCollisionEnter2D(Collision2D other) {
-
-  if (other.gameObject.tag == "Asteroid") {
-    return;
-  }
+  private void OnCollisionEnter2D(Collision2D other)
+  {
+    if (other.gameObject.tag == "Asteroid") {
+      return;
+    }
     
-  if (other.gameObject.tag == "Bullet") {
-    if (other.gameObject.GetComponent<SpriteRenderer>().color == Color.green) {
-      IncreasePlayerScore();
+    if (other.gameObject.tag == "Bullet") {
+      if (other.gameObject.GetComponent<SpriteRenderer>().color == Color.green) {
+        IncreasePlayerScore();
+      }
+    other.gameObject.SetActive(false);
+      if (size == Size.big || size == Size.medium)
+        {
+          CrackAsteroidInTwo();
+        }
     }
-  other.gameObject.SetActive(false);
-
-  if (size == Size.big || size == Size.medium)
-    {
-      CrackAsteroidInTwo();
-    }
-  }
-
-  gameObject.SetActive(false);
-  ObjectPool.SharedInstance.ReturnToPool("Asteroids", gameObject);
-  asteroidSpawner.CheckEnvironment();
+    gameObject.SetActive(false);
+    ObjectPool.SharedInstance.ReturnToPool("Asteroids", gameObject);
+    asteroidSpawner.CheckEnvironment();
   }
 
   private void CrackAsteroidInTwo()
   {
-    Vector2 firstAsteroidDirectionSpawnPos = transform.position + GetAngleDirectionVector(45f);
-    Vector2 secondAsteroidDirectionSpawnPos = transform.position + GetAngleDirectionVector(-45f);
+    Vector2 firstAsteroidSpawnPos = transform.position + GetAngleDirectionVector(45f);
+    Vector2 secondAsteroidSpawnPos = transform.position + GetAngleDirectionVector(-45f);
     float randomChildrenSpeed = Random.Range(1f, 1.8f);
 
-    SpawnSmallerAsteroid(firstAsteroidDirectionSpawnPos, GetAngleDirectionVector(45f) * randomChildrenSpeed);
-    SpawnSmallerAsteroid(secondAsteroidDirectionSpawnPos, GetAngleDirectionVector(-45f) * randomChildrenSpeed);
+    SpawnSmallerAsteroid(firstAsteroidSpawnPos, GetAngleDirectionVector(45f) * randomChildrenSpeed);
+    SpawnSmallerAsteroid(secondAsteroidSpawnPos, GetAngleDirectionVector(-45f) * randomChildrenSpeed);
   }
 
   private void IncreasePlayerScore()
@@ -96,6 +94,10 @@ public class Asteroid : MonoBehaviour
     rotated_point.x = fatherVelocity.x * Mathf.Cos(angle) - fatherVelocity.y * Mathf.Sin(angle);
     rotated_point.y = fatherVelocity.x * Mathf.Sin(angle) + fatherVelocity.y * Mathf.Cos(angle);
     return rotated_point;
+  }
+
+  public void ResetSize() {
+    size = Size.big;
   }
 
 }

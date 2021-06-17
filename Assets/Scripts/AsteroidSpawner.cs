@@ -13,7 +13,7 @@ public class AsteroidSpawner : MonoBehaviour
         CheckEnvironment();
     }
 
-    private void PositionRandomizer() {
+    private Vector3 PositionRandomizer() {
       int randomAxis = Random.Range(0, 2);
       float randomAxisPos = Random.Range(0f, 1f);
       Vector3 randomSpawnPos;
@@ -21,14 +21,12 @@ public class AsteroidSpawner : MonoBehaviour
       {
           case 0:
             randomSpawnPos = new Vector3(randomAxis, randomAxisPos, 10f);
-            transform.position = Camera.main.ViewportToWorldPoint(randomSpawnPos);
-            break;
+            return Camera.main.ViewportToWorldPoint(randomSpawnPos);
           case 1:
             randomSpawnPos = new Vector3(randomAxisPos, randomAxis, 10f);
-            transform.position = Camera.main.ViewportToWorldPoint(randomSpawnPos);
-            break;
+            return Camera.main.ViewportToWorldPoint(randomSpawnPos);
       }
-      
+      return transform.position;
     }
 
   private void Spawn() {
@@ -38,9 +36,9 @@ public class AsteroidSpawner : MonoBehaviour
       i--;
       GameObject asteroid = ObjectPool.SharedInstance.GetPooledObject("Asteroids");
       asteroid.transform.localScale = new Vector3(2f, 2f, 1f);
-      asteroid.transform.position = transform.position;
-      PositionRandomizer();
+      asteroid.transform.position = PositionRandomizer();
       asteroid.SetActive(true);
+      asteroid.GetComponent<Asteroid>().ResetSize();
       SetInMotion(asteroid);
     }
     amountToSpawn++;
