@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4721a6290625e49aac6e2444786677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountToSpawn: 7
+  amountToSpawn: 2
   speedCeiling: 200
   speedFloor: 50
 --- !u!114 &37656716
@@ -208,7 +208,7 @@ MonoBehaviour:
     size: 15
   - tag: Asteroids
     prefab: {fileID: 4374097926933568939, guid: 07649fd318da74346853ee1739859290, type: 3}
-    size: 15
+    size: 50
 --- !u!1 &318729727
 GameObject:
   m_ObjectHideFlags: 0
