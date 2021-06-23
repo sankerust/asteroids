@@ -21,13 +21,15 @@ public class Asteroid : MonoBehaviour
 
   private void OnCollisionEnter2D(Collision2D other)
   {
-    if (other.gameObject.CompareTag("Asteroid")) {
+    if (other.gameObject.CompareTag("Asteroid"))
+    {
       return;
     }
     
-    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player) {
-        size--;
-        IncreasePlayerScore();
+    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player)
+    {
+      size--;
+      IncreasePlayerScore();
       if (size == Size.big || size == Size.medium)
         {
           CrackAsteroidInTwo();
@@ -76,7 +78,8 @@ public class Asteroid : MonoBehaviour
     }
   }
 
-  private void SpawnSmallerAsteroid(Vector3 smallerAsteroidSpawnPosition, Vector2 smallerAsteroidMoveDirection) {
+  private void SpawnSmallerAsteroid(Vector3 smallerAsteroidSpawnPosition, Vector2 smallerAsteroidMoveDirection)
+  {
     GameObject smallerAsteroid;
     smallerAsteroid = ObjectPool.SharedInstance.GetPooledObject("Asteroids");
     
@@ -96,7 +99,8 @@ public class Asteroid : MonoBehaviour
     return rotatedPoint;
   }
 
-  public void ResetSize() {
+  public void ResetSize()
+  {
     size = Size.big;
   }
 }

@@ -26,7 +26,6 @@ public class UFO : MonoBehaviour
   {
     CacheReferences();
     ufoSpeed = Screen.width / 100f / 10f;
-
     Invoke("Spawn", Random.Range(spawnRateFloor, spawnRateCeil));
   }
 
@@ -49,16 +48,20 @@ public class UFO : MonoBehaviour
     EnableUfo(true);
 
     // set in motion
-    if (randomSide == 0) {
+    if (randomSide == 0)
+    {
       rb.velocity = transform.TransformDirection(Vector2.right * ufoSpeed);
-    } else {
+    }
+    else
+    {
       rb.velocity = transform.TransformDirection(Vector2.left * ufoSpeed);
     }
-    
   }
 
-  private void OnCollisionEnter2D(Collision2D other) {
-    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player) {
+  private void OnCollisionEnter2D(Collision2D other)
+  {
+    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player)
+    {
       playerController.IncreaseScore(200);
     }
     EnableUfo(false);
@@ -72,7 +75,8 @@ public class UFO : MonoBehaviour
     isAlive = state;
   }
 
-  IEnumerator ShootAtPlayer() {
+  private IEnumerator ShootAtPlayer()
+  {
     canShoot = false;
     float randomShotDelay = Random.Range(2f, 5.1f);
 
@@ -86,21 +90,25 @@ public class UFO : MonoBehaviour
     canShoot = true;
   }
 
-  private void Update() {
-    if (canShoot && isAlive) {
+  private void Update()
+  {
+    if (canShoot && isAlive)
+    {
       StartCoroutine(ShootAtPlayer());
     }
-    if (isAlive) {
+    if (isAlive)
+    {
       FlyAway();
     }
   }
 
-private void FlyAway() {
+  private void FlyAway()
+  {
     Vector3 currentViewportPosition = Camera.main.WorldToViewportPoint(transform.position);
-    if (currentViewportPosition.x > 1 || currentViewportPosition.x < 0) {
+    if (currentViewportPosition.x > 1 || currentViewportPosition.x < 0)
+    {
       EnableUfo(false);
       Invoke("Spawn", Random.Range(spawnRateFloor, spawnRateCeil));
     }
-}
-  
+  }
 }

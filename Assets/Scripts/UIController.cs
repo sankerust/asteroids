@@ -15,43 +15,53 @@ public class UIController : MonoBehaviour
 
   PlayerController player;
 
-  private void Awake() {
+  private void Awake()
+  {
     player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     UpdateSwitchButton();
   }
 
-  public void UpdateScore() {
+  public void UpdateScore()
+  {
     scoreText.text = "Score: " + player.GetPlayerScore();
   }
 
-  public void UpdateLifes() {
+  public void UpdateLifes()
+  {
     lifesLeftText.text = "Lifes left: " + player.GetPlayerLifes();
   }
 
-  public void NewGameButtonActive(bool state) {
+  public void NewGameButtonActive(bool state)
+  {
     newGameButton.SetActive(state);
   }
 
-  public void ContinueButtonActive(bool state) {
+  public void ContinueButtonActive(bool state)
+  {
     continueButton.SetActive(state);
   }
 
-  public void UpdateSwitchButton() {
+  public void UpdateSwitchButton()
+  {
     controlSwitchButton.GetComponentInChildren<Text>().text = GetControlSchemeString();
   }
 
   private string GetControlSchemeString()
   {
     int controlScheme = GameSettings.controlScheme;
-    if (controlScheme == 0) {
+    if (controlScheme == 0)
+    {
       return "Current control scheme: Rotate + accelerate: wad/arrows; Shoot: space";
     }
     
-    if (controlScheme == 1) {
+    if (controlScheme == 1)
+    {
       return "Current control scheme: Mouselook; Fire: LMB,Space; Accelerate: RMB,W,UP";
-    } else {
-        return "no control scheme defined";
-        }
+    }
+    else
+    {
+      return "no control scheme defined";
+    }
   }
 
   public void EnablePauseMenu(bool state)
@@ -62,5 +72,4 @@ public class UIController : MonoBehaviour
     quitButton.SetActive(state);
     controlSwitchButton.SetActive(state);
   }
-
 }

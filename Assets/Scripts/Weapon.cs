@@ -11,7 +11,8 @@ public class Weapon : MonoBehaviour
 
   [SerializeField] float weaponRange = 40f;
 
-  private void Awake() {
+  private void Awake()
+  {
     audioSource = GetComponent<AudioSource>();
   }
 

@@ -8,28 +8,30 @@ public class AsteroidSpawner : MonoBehaviour
   [SerializeField] float speedCeiling = 200f;
   [SerializeField] float speedFloor = 50f;
 
-    private void Start()
+  private void Start()
+  {
+    CheckEnvironment();
+  }
+
+  private Vector3 PositionRandomizer()
+  {
+    int randomAxis = Random.Range(0, 2);
+    float randomAxisPos = Random.Range(0f, 1f);
+    Vector3 randomSpawnPos;
+    switch (randomAxis)
     {
-        CheckEnvironment();
+        case 0:
+          randomSpawnPos = new Vector3(randomAxis, randomAxisPos, 10f);
+          return Camera.main.ViewportToWorldPoint(randomSpawnPos);
+        case 1:
+          randomSpawnPos = new Vector3(randomAxisPos, randomAxis, 10f);
+          return Camera.main.ViewportToWorldPoint(randomSpawnPos);
     }
+    return transform.position;
+  }
 
-    private Vector3 PositionRandomizer() {
-      int randomAxis = Random.Range(0, 2);
-      float randomAxisPos = Random.Range(0f, 1f);
-      Vector3 randomSpawnPos;
-      switch (randomAxis)
-      {
-          case 0:
-            randomSpawnPos = new Vector3(randomAxis, randomAxisPos, 10f);
-            return Camera.main.ViewportToWorldPoint(randomSpawnPos);
-          case 1:
-            randomSpawnPos = new Vector3(randomAxisPos, randomAxis, 10f);
-            return Camera.main.ViewportToWorldPoint(randomSpawnPos);
-      }
-      return transform.position;
-    }
-
-  private void Spawn() {
+  private void Spawn()
+  {
     int i = amountToSpawn;
     while (i > 0)
     {
@@ -42,7 +44,7 @@ public class AsteroidSpawner : MonoBehaviour
       SetInMotion(asteroid);
     }
     amountToSpawn++;
-    }
+  }
 
   private void SetInMotion(GameObject asteroid)
   {
@@ -59,5 +61,4 @@ public class AsteroidSpawner : MonoBehaviour
       Invoke ("Spawn", 2f);
     };
   }
-
 }

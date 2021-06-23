@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class ScreenWrap : MonoBehaviour
 {
-    void FixedUpdate()
-    {
+  void FixedUpdate()
+  {
     Vector3 currentViewportPosition = Camera.main.WorldToViewportPoint(transform.position);
     if (currentViewportPosition.x < 0)
     {
@@ -33,5 +33,5 @@ public class ScreenWrap : MonoBehaviour
       currentViewportPosition = new Vector3(currentViewportPosition.x, 0f, currentViewportPosition.z);
       transform.position = Camera.main.ViewportToWorldPoint(currentViewportPosition);
     }
-    }
+  }
 }

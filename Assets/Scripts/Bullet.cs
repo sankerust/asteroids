@@ -8,76 +8,91 @@ public class Bullet : MonoBehaviour
   Rigidbody2D rb;
   SpriteRenderer spriteRenderer;
   GameObject whoShotMe;
-
   Vector3 bulletOrigin;
   Vector3 previousPos;
+
   float distanceTravelled;
   bool wasEnabled = false;
     
-    void Awake()
+  void Awake()
+  {
+    rb = GetComponent<Rigidbody2D>();
+    spriteRenderer = GetComponent<SpriteRenderer>();
+    previousPos = transform.position;
+  }
+
+  private void Start()
+  {
+    wasEnabled = true;
+  }
+
+  private void OnEnable()
+  {
+    previousPos = transform.position;
+  }
+
+  public void SetBulletVelocity(Vector2 velocity)
+  {
+    rb.velocity = velocity;
+  }
+
+  public void SetBulletColor(Color color)
+  {
+    spriteRenderer.color = color;
+  }
+
+  public void SetBulletShooter(GameObject shooter)
+  {
+    whoShotMe = shooter;
+  }
+
+  public void SetBulletOrigin(Vector3 origin)
+  {
+    transform.position = origin;
+    bulletOrigin = origin;
+  }
+
+  public GameObject GetBulletShooter()
+  {
+    return whoShotMe;
+  }
+
+  public void SetBulletRange(float range)
+  {
+    allowedTravelDistance = range;
+  }
+
+  private void DistanceTravelled()
+  {
+    distanceTravelled = distanceTravelled + Vector3.Distance(transform.position, previousPos);
+    previousPos = transform.position;
+  }
+
+  private void Update()
+  {
+    DistanceTravelled();
+    DisableBullet();
+  }
+  
+  private void DisableBullet()
+  {
+    if (distanceTravelled >= allowedTravelDistance)
     {
-      rb = GetComponent<Rigidbody2D>();
-      spriteRenderer = GetComponent<SpriteRenderer>();
-      previousPos = transform.position;
+      distanceTravelled = 0;
+      gameObject.SetActive(false);
     }
+  }
 
-    private void Start() {
-      wasEnabled = true;
+  private void OnDisable()
+  {
+    if (wasEnabled)
+    {
+      ObjectPool.SharedInstance.ReturnToPool("Bullets", gameObject);
     }
+  }
 
-    private void OnEnable() {
-      previousPos = transform.position;
-    }
-
-    public void SetBulletVelocity(Vector2 velocity) {
-      rb.velocity = velocity;
-    }
-
-    public void SetBulletColor(Color color) {
-      spriteRenderer.color = color;
-    }
-
-    public void SetBulletShooter(GameObject shooter) {
-      whoShotMe = shooter;
-    }
-
-    public void SetBulletOrigin(Vector3 origin) {
-      transform.position = origin;
-      bulletOrigin = origin;
-    }
-
-    public GameObject GetBulletShooter() {
-      return whoShotMe;
-    }
-
-    public void SetBulletRange(float range) {
-      allowedTravelDistance = range;
-    }
-
-    private void DistanceTravelled() {
-      distanceTravelled = distanceTravelled + Vector3.Distance(transform.position, previousPos);
-      previousPos = transform.position;
-    }
-
-    private void Update() {
-      DistanceTravelled();
-      DisableBullet();
-    }
-    
-    private void DisableBullet() {
-      if (distanceTravelled >= allowedTravelDistance) {
-        distanceTravelled = 0;
-        gameObject.SetActive(false);
-      }
-    }
-
-    private void OnDisable() {
-      if (wasEnabled) {
-        ObjectPool.SharedInstance.ReturnToPool("Bullets", gameObject);
-      }
-    }
-
-    private void OnCollisionEnter2D(Collision2D other) {
-      this.gameObject.SetActive(false);
-    }
+  private void OnCollisionEnter2D(Collision2D other)
+  {
+    this.gameObject.SetActive(false);
+  }
 }
