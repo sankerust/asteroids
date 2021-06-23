@@ -15,19 +15,31 @@ public class UFO : MonoBehaviour
   bool isAlive;
 
   Rigidbody2D rb;
-  PlayerController player;
+  GameObject player;
+  PlayerController playerController;
   AudioSource audioSource;
   Weapon weapon;
+  SpriteRenderer spriteRenderer;
+  BoxCollider2D boxCollider2D;
 
-  private void Start() {
-    rb = GetComponent<Rigidbody2D>();
-    audioSource = GetComponent<AudioSource>();
-    weapon = GetComponent<Weapon>();
-    player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+  private void Awake()
+  {
+    CacheReferences();
     ufoSpeed = Screen.width / 100f / 10f;
+
     Invoke("Spawn", Random.Range(spawnRateFloor, spawnRateCeil));
   }
 
+  private void CacheReferences()
+  {
+    rb = GetComponent<Rigidbody2D>();
+    audioSource = GetComponent<AudioSource>();
+    weapon = GetComponent<Weapon>();
+    spriteRenderer = GetComponent<SpriteRenderer>();
+    boxCollider2D = GetComponent<BoxCollider2D>();
+    player = GameObject.FindWithTag("Player");
+    playerController = player.GetComponent<PlayerController>();
+  }
 
   private void Spawn()
   {
@@ -48,8 +60,8 @@ public class UFO : MonoBehaviour
   private void OnCollisionEnter2D(Collision2D other) {
     if (other.gameObject.tag == "Bullet") {
       other.gameObject.SetActive(false);
-      if (other.gameObject.GetComponent<SpriteRenderer>().color == Color.green) {
-        player.IncreaseScore(200);
+      if (other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player) {
+        playerController.IncreaseScore(200);
       }
     }
     EnableUfo(false);
@@ -58,8 +70,8 @@ public class UFO : MonoBehaviour
 
   private void EnableUfo(bool state)
   {
-    GetComponent<SpriteRenderer>().enabled = state;
-    GetComponent<BoxCollider2D>().enabled = state;
+    spriteRenderer.enabled = state;
+    boxCollider2D.enabled = state;
     isAlive = state;
   }
 
@@ -69,11 +81,11 @@ public class UFO : MonoBehaviour
 
     audioSource.PlayOneShot(ufoShootSound);
 
-    Vector3 origin = transform.position + (player.transform.position - gameObject.transform.position).normalized;
-    Vector2 velocity = (player.transform.position - origin).normalized * bulletSpeed;
+    Vector3 origin = transform.position + (playerController.transform.position - gameObject.transform.position).normalized;
+    Vector2 velocity = (playerController.transform.position - origin).normalized * bulletSpeed;
     Color color = Color.red;
 
-    weapon.ShootBullet(origin, velocity, color);
+    weapon.ShootBullet(origin, velocity, color, this.gameObject);
 
     yield return new WaitForSeconds(randomShotDelay);
     canShoot = true;

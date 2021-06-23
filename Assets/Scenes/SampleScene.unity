@@ -305,6 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1acba603df5b0dc41acdac6b6192c50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponRange: 40
 --- !u!1001 &513906020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -358,11 +359,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402691, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: spawnRateCeil
-      value: 40
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402691, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: spawnRateFloor
-      value: 20
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402748, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: m_Name
@@ -1652,7 +1653,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 650278198, guid: 85ca338c6b1a9bc4c8fb3d97097dcbb6, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7817658413537121289, guid: 85ca338c6b1a9bc4c8fb3d97097dcbb6, type: 3}
       propertyPath: m_Name

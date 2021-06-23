@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-  public void ShootBullet(Vector3 origin, Vector2 velocity, Color color)
+  GameObject whoShot;
+
+  [SerializeField] float weaponRange = 40f;
+
+  public void ShootBullet(Vector3 origin, Vector2 velocity, Color color, GameObject shooter)
   {
     GameObject bullet = ObjectPool.SharedInstance.GetPooledObject("Bullets");
     if (bullet != null)
     {
+      Bullet bulletScript = bullet.GetComponent<Bullet>();
+
       bullet.SetActive(true);
-      bullet.GetComponent<SpriteRenderer>().color = color;
-      bullet.transform.position = origin;
-      bullet.GetComponent<Rigidbody2D>().velocity = velocity;
+      bulletScript.SetBulletColor(color);
+      bulletScript.SetBulletOrigin(origin);
+      bulletScript.SetBulletVelocity(velocity);
+      bulletScript.SetBulletShooter(shooter);
+      //bulletScript.SetBulletRange(weaponRange);
       StartCoroutine(DisableBullet(bullet));
     }
   }
