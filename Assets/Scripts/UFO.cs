@@ -58,11 +58,8 @@ public class UFO : MonoBehaviour
   }
 
   private void OnCollisionEnter2D(Collision2D other) {
-    if (other.gameObject.tag == "Bullet") {
-      other.gameObject.SetActive(false);
-      if (other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player) {
-        playerController.IncreaseScore(200);
-      }
+    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player) {
+      playerController.IncreaseScore(200);
     }
     EnableUfo(false);
     Invoke("Spawn", Random.Range(spawnRateFloor, spawnRateCeil));
@@ -79,23 +76,14 @@ public class UFO : MonoBehaviour
     canShoot = false;
     float randomShotDelay = Random.Range(2f, 5.1f);
 
-    audioSource.PlayOneShot(ufoShootSound);
-
     Vector3 origin = transform.position + (playerController.transform.position - gameObject.transform.position).normalized;
     Vector2 velocity = (playerController.transform.position - origin).normalized * bulletSpeed;
     Color color = Color.red;
 
-    weapon.ShootBullet(origin, velocity, color, this.gameObject);
+    weapon.ShootBullet(origin, velocity, color, this.gameObject, ufoShootSound);
 
     yield return new WaitForSeconds(randomShotDelay);
     canShoot = true;
-  }
-
-  IEnumerator DisableBullet(GameObject bullet) {
-    float bulletLifeTime = Screen.width / bullet.GetComponent<Rigidbody2D>().velocity.magnitude / 100f;
-    yield return new WaitForSeconds(bulletLifeTime);
-    bullet.SetActive(false);
-    ObjectPool.SharedInstance.ReturnToPool("Bullets", bullet);
   }
 
   private void Update() {

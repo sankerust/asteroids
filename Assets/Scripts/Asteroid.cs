@@ -29,7 +29,6 @@ public class Asteroid : MonoBehaviour
       if (other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player ) {
         IncreasePlayerScore();
       }
-    other.gameObject.SetActive(false);
       if (size == Size.big || size == Size.medium)
         {
           CrackAsteroidInTwo();

@@ -102,8 +102,7 @@ public class PlayerController : MonoBehaviour
     Vector2 velocity = transform.TransformDirection(Vector2.up * bulletSpeed);
     Color color = Color.green;
 
-    audioSource.PlayOneShot(shootSound);
-    weapon.ShootBullet(origin, velocity, color, this.gameObject);
+    weapon.ShootBullet(origin, velocity, color, this.gameObject, shootSound);
   }
 
   private IEnumerator reloadMag()

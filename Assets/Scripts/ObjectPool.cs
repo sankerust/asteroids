@@ -19,9 +19,7 @@ public class ObjectPool : MonoBehaviour
 
   void Awake() {
     SharedInstance = this;
-  }
 
-  void Start() {
     poolDictionary = new Dictionary<string, Queue<GameObject>>();
 
 
@@ -41,8 +39,6 @@ public class ObjectPool : MonoBehaviour
   }
 
   public GameObject GetPooledObject(string tag) {
-
-
     if (!poolDictionary.ContainsKey(tag)) {
       Debug.LogWarning("PoolTag mismatch");
       return null;

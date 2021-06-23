@@ -12,12 +12,17 @@ public class Bullet : MonoBehaviour
   Vector3 bulletOrigin;
   Vector3 previousPos;
   float distanceTravelled;
+  bool wasEnabled = false;
     
     void Awake()
     {
       rb = GetComponent<Rigidbody2D>();
       spriteRenderer = GetComponent<SpriteRenderer>();
       previousPos = transform.position;
+    }
+
+    private void Start() {
+      wasEnabled = true;
     }
 
     private void OnEnable() {
@@ -49,23 +54,30 @@ public class Bullet : MonoBehaviour
       allowedTravelDistance = range;
     }
 
-    // private void DistanceTravelled() {
-    //   distanceTravelled = distanceTravelled + Vector3.Distance(transform.position, previousPos);
-    //   previousPos = transform.position;
-    // }
+    private void DistanceTravelled() {
+      distanceTravelled = distanceTravelled + Vector3.Distance(transform.position, previousPos);
+      previousPos = transform.position;
+    }
 
     private void Update() {
-      // DistanceTravelled();
-      // DisableBullet();
+      DistanceTravelled();
+      DisableBullet();
     }
     
+    private void DisableBullet() {
+      if (distanceTravelled >= allowedTravelDistance) {
+        distanceTravelled = 0;
+        gameObject.SetActive(false);
+      }
+    }
 
-    // private void DisableBullet() {
-    //   if (distanceTravelled >= allowedTravelDistance) {
-    //     distanceTravelled = 0;
-    //     gameObject.SetActive(false);
-    //     ObjectPool.SharedInstance.ReturnToPool("Bullets", gameObject);
-    //   }
-    // }
+    private void OnDisable() {
+      if (wasEnabled) {
+        ObjectPool.SharedInstance.ReturnToPool("Bullets", gameObject);
+      }
+    }
 
+    private void OnCollisionEnter2D(Collision2D other) {
+      this.gameObject.SetActive(false);
+    }
 }
