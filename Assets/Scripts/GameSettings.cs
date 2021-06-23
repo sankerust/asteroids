@@ -8,27 +8,23 @@ public class GameSettings : MonoBehaviour
 {
   public static bool gamePaused = true;
 
-  [SerializeField] Text pauseText;
-  [SerializeField] GameObject continueGameButton;
-  [SerializeField] GameObject newGameButton;
-  [SerializeField] GameObject quitButton;
-  [SerializeField] GameObject controlSwitchButton;
-  [SerializeField] PlayerController playerController;
+  PlayerController playerController;
+  UIController uIController;
 
   public static int controlScheme;
   private static bool gameStarted = false;
 
-  private void Awake() {
-    playerController.SetControlScheme(controlScheme);
-    controlSwitchButton.GetComponentInChildren<Text>().text = GetControlSchemeString();
-  }
-
+    private void Awake() {
+      playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+      uIController = GetComponent<UIController>();
+      playerController.SetControlScheme(controlScheme);
+    }
 
     public void NewGame() {
       SceneManager.LoadScene(0);
       gameStarted = true;
       gamePaused = false;
-      newGameButton.SetActive(false);
+      uIController.NewGameButtonActive(false);
       playerController.SetControlScheme(controlScheme);
     }
 
@@ -44,31 +40,14 @@ public class GameSettings : MonoBehaviour
     }
 
     public void SwitchControlScheme() {
-    if (controlScheme == 0)
-    {
-      controlScheme = 1;
-    }
-    else
-    {
+      if (controlScheme == 0) {
+        controlScheme = 1;
+      } else {
       controlScheme = 0;
-    }
+      }
 
     playerController.SetControlScheme(controlScheme);
-    controlSwitchButton.GetComponentInChildren<Text>().text = GetControlSchemeString();
-
-    }
-
-    private string GetControlSchemeString() {
-      if(controlScheme == 0) {
-        return "Current control scheme: Rotate + accelerate: wad/arrows; Shoot: space";
-      }
-      if (controlScheme == 1)
-      {
-          return "Current control scheme: Mouselook; Fire: LMB,Space; Accelerate: RMB,W,UP";
-        }
-        else {
-          return "no control scheme defined";
-        }
+    uIController.UpdateSwitchButton();
     }
 
   void Update()
@@ -85,7 +64,7 @@ public class GameSettings : MonoBehaviour
     if (gamePaused)
     {
       Time.timeScale = 0;
-      EnablePauseMenu(true);
+      uIController.EnablePauseMenu(true);
     }
     else
     {
@@ -96,15 +75,6 @@ public class GameSettings : MonoBehaviour
   private void ResumeGame()
   {
     Time.timeScale = 1;
-    EnablePauseMenu(false);
-  }
-
-  private void EnablePauseMenu(bool isGamePaused)
-  {
-    continueGameButton.SetActive(isGamePaused);
-    pauseText.enabled = isGamePaused;
-    newGameButton.SetActive(isGamePaused);
-    quitButton.SetActive(isGamePaused);
-    controlSwitchButton.SetActive(isGamePaused);
+    uIController.EnablePauseMenu(false);
   }
 }

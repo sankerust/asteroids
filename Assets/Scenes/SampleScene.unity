@@ -171,9 +171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseText: {fileID: 1011294599}
-  continueGameButton: {fileID: 1070621854}
-  newGameButton: {fileID: 1591391354}
-  quitButton: {fileID: 2044413456}
   controlSwitchButton: {fileID: 1646523083}
   playerController: {fileID: 947801186}
 --- !u!114 &37656715
@@ -225,6 +222,10 @@ MonoBehaviour:
   lifesLeftText: {fileID: 1374628534}
   scoreText: {fileID: 1751840798}
   pauseText: {fileID: 1011294599}
+  continueButton: {fileID: 1070621854}
+  newGameButton: {fileID: 1591391354}
+  controlSwitchButton: {fileID: 1646523083}
+  quitButton: {fileID: 2044413456}
 --- !u!1 &318729727
 GameObject:
   m_ObjectHideFlags: 0
@@ -375,11 +376,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402691, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: spawnRateCeil
-      value: 10
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402691, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: spawnRateFloor
-      value: 2
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402748, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: m_Name
@@ -639,7 +640,7 @@ GameObject:
   - component: {fileID: 1070621857}
   - component: {fileID: 1070621856}
   m_Layer: 5
-  m_Name: ContinueGameButton
+  m_Name: ContinueButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1063,7 +1064,7 @@ GameObject:
   - component: {fileID: 1646523086}
   - component: {fileID: 1646523085}
   m_Layer: 5
-  m_Name: ControlScheme
+  m_Name: ControlSwitchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
