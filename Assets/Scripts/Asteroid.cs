@@ -25,10 +25,9 @@ public class Asteroid : MonoBehaviour
       return;
     }
     
-    if (other.gameObject.CompareTag("Bullet")) {
-      if (other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player ) {
+    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player) {
+        size--;
         IncreasePlayerScore();
-      }
       if (size == Size.big || size == Size.medium)
         {
           CrackAsteroidInTwo();
@@ -73,7 +72,6 @@ public class Asteroid : MonoBehaviour
         break;
       case Size.small:
         playerController.IncreaseScore(100);
-        ResetSize();
         break;
     }
   }
