@@ -14,8 +14,7 @@ public class PlayerController : MonoBehaviour
   [SerializeField] AudioClip deathSound;
   [SerializeField] AudioClip thrustSound;
   [SerializeField] AudioClip killSound;
-  [SerializeField] Text lifesLeftText;
-  [SerializeField] Text scoreText;
+  [SerializeField] UIController uiController;
 
   private int lifesLeft, score, shotsMade, controlScheme;
   private bool canShoot;
@@ -28,20 +27,34 @@ public class PlayerController : MonoBehaviour
 
   void Start()
   {
+    CacheReferences();
+    lifesLeft = 3;
+    score = 0;
+    uiController.UpdateScore();
+    uiController.UpdateLifes();
+    shotsMade = 0;
+    canShoot = true;
+  }
+
+  private void CacheReferences()
+  {
     rb = GetComponent<Rigidbody2D>();
     audioSource = GetComponent<AudioSource>();
     weapon = GetComponent<Weapon>();
-    lifesLeft = 3;
-    score = 0;
-    lifesLeftText.text = "Lifes left: " + lifesLeft;
-    scoreText.text = "Score: " + score;
-    shotsMade = 0;
-    canShoot = true;
+    uiController = uiController.GetComponent<UIController>();
   }
 
   public void SetControlScheme(int whichOne)
   {
     controlScheme = whichOne;
+  }
+
+  public int GetPlayerScore() {
+    return score;
+  }
+
+  public int GetPlayerLifes() {
+    return lifesLeft;
   }
 
   void Update()
@@ -68,7 +81,7 @@ public class PlayerController : MonoBehaviour
   {
     audioSource.PlayOneShot(killSound);
     score += increaseAmount;
-    scoreText.text = "Score: " + score;
+    uiController.UpdateScore();
   }
 
   void FixedUpdate()
@@ -166,7 +179,7 @@ public class PlayerController : MonoBehaviour
     audioSource.PlayOneShot(deathSound);
     if (lifesLeft > 0) {
       lifesLeft--;
-      lifesLeftText.text = "Lifes left: " + lifesLeft;
+      uiController.UpdateLifes();
       transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f,10f));
       StartCoroutine(Invincible());
       StartCoroutine(Blink(3f));
