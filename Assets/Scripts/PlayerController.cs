@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
   Rigidbody2D rb;
   AudioSource audioSource;
   Weapon weapon;
+  Camera cam;
   
   void Start()
   {
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
     audioSource = GetComponent<AudioSource>();
     weapon = GetComponent<Weapon>();
     uiController = uiController.GetComponent<UIController>();
+    cam = Camera.main;
   }
 
   public void SetControlScheme(int whichOne)
@@ -140,7 +142,7 @@ public class PlayerController : MonoBehaviour
 
     if (controlScheme == 1)
     {
-      Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+      Vector3 mousePos = cam.ScreenToWorldPoint(Input.mousePosition);
       Quaternion rotateTowards = Quaternion.LookRotation(Vector3.forward, mousePos - transform.position);
       transform.rotation = Quaternion.RotateTowards(transform.rotation, rotateTowards, rotation * Time.deltaTime);
     }
@@ -187,7 +189,7 @@ public class PlayerController : MonoBehaviour
     {
       lifesLeft--;
       uiController.UpdateLifes();
-      transform.position = Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f,10f));
+      transform.position = cam.ViewportToWorldPoint(new Vector3(0.5f, 0.5f,10f));
       StartCoroutine(Invincible());
       StartCoroutine(Blink(3f));
     }

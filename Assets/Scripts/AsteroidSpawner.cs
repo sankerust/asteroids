@@ -8,9 +8,12 @@ public class AsteroidSpawner : MonoBehaviour
   [SerializeField] float speedCeiling = 200f;
   [SerializeField] float speedFloor = 50f;
 
+  Camera cam;
+
   private void Start()
   {
     CheckEnvironment();
+    cam = Camera.main;
   }
 
   private Vector3 PositionRandomizer()
@@ -22,10 +25,10 @@ public class AsteroidSpawner : MonoBehaviour
     {
         case 0:
           randomSpawnPos = new Vector3(randomAxis, randomAxisPos, 10f);
-          return Camera.main.ViewportToWorldPoint(randomSpawnPos);
+          return cam.ViewportToWorldPoint(randomSpawnPos);
         case 1:
           randomSpawnPos = new Vector3(randomAxisPos, randomAxis, 10f);
-          return Camera.main.ViewportToWorldPoint(randomSpawnPos);
+          return cam.ViewportToWorldPoint(randomSpawnPos);
     }
     return transform.position;
   }

@@ -21,6 +21,7 @@ public class UFO : MonoBehaviour
   Weapon weapon;
   SpriteRenderer spriteRenderer;
   BoxCollider2D boxCollider2D;
+  Camera cam;
 
   private void Awake()
   {
@@ -38,13 +39,14 @@ public class UFO : MonoBehaviour
     boxCollider2D = GetComponent<BoxCollider2D>();
     player = GameObject.FindWithTag("Player");
     playerController = player.GetComponent<PlayerController>();
+    cam = Camera.main;
   }
 
   private void Spawn()
   {
     int randomSide = Random.Range(0, 2); // 0 for left side, 1 for right side
     float randomAxisPos = Random.Range(0.2f, 0.8f); // 20% of min height & 80% of max height
-    transform.position = Camera.main.ViewportToWorldPoint(new Vector3(randomSide, randomAxisPos, 10f));
+    transform.position = cam.ViewportToWorldPoint(new Vector3(randomSide, randomAxisPos, 10f));
     EnableUfo(true);
 
     // set in motion
@@ -104,7 +106,7 @@ public class UFO : MonoBehaviour
 
   private void FlyAway()
   {
-    Vector3 currentViewportPosition = Camera.main.WorldToViewportPoint(transform.position);
+    Vector3 currentViewportPosition = cam.WorldToViewportPoint(transform.position);
     if (currentViewportPosition.x > 1 || currentViewportPosition.x < 0)
     {
       EnableUfo(false);
