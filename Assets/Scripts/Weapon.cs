@@ -2,26 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
+
 public class Weapon : MonoBehaviour
 {
-  public void ShootBullet(Vector3 origin, Vector2 velocity, Color color)
+  GameObject whoShot;
+  AudioSource audioSource;
+
+  [SerializeField] float weaponRange = 40f;
+
+  private void Awake()
+  {
+    audioSource = GetComponent<AudioSource>();
+  }
+
+  public void ShootBullet(Vector3 origin, Vector2 velocity, Color color, GameObject shooter, AudioClip shootSound)
   {
     GameObject bullet = ObjectPool.SharedInstance.GetPooledObject("Bullets");
     if (bullet != null)
     {
-      bullet.SetActive(true);
-      bullet.GetComponent<SpriteRenderer>().color = color;
-      bullet.transform.position = origin;
-      bullet.GetComponent<Rigidbody2D>().velocity = velocity;
-      StartCoroutine(DisableBullet(bullet));
-    }
-  }
+      Bullet bulletScript = bullet.GetComponent<Bullet>();
+      audioSource.PlayOneShot(shootSound);
 
-  private IEnumerator DisableBullet(GameObject bullet)
-  {
-    float lifeTime = Screen.width / bullet.GetComponent<Rigidbody2D>().velocity.magnitude / 100f;
-    yield return new WaitForSeconds(lifeTime);
-    bullet.SetActive(false);
-    ObjectPool.SharedInstance.ReturnToPool("Bullets", bullet);
+      bullet.SetActive(true);
+      bulletScript.SetBulletColor(color);
+      bulletScript.SetBulletOrigin(origin);
+      bulletScript.SetBulletVelocity(velocity);
+      bulletScript.SetBulletShooter(shooter);
+      bulletScript.SetBulletRange(weaponRange);
+    }
   }
 }

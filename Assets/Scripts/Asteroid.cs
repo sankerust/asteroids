@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Asteroid : MonoBehaviour
 {
-  PlayerController player;
+  GameObject player;
+  PlayerController playerController;
   Rigidbody2D rb;
   AsteroidSpawner asteroidSpawner;
   Size size;
@@ -13,21 +14,22 @@ public class Asteroid : MonoBehaviour
   void Start()
   {
     asteroidSpawner = GameObject.FindWithTag("GameController").GetComponent<AsteroidSpawner>();
-    player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+    player = GameObject.FindWithTag("Player");
+    playerController = player.GetComponent<PlayerController>();
     rb = GetComponent<Rigidbody2D>();
   }
 
   private void OnCollisionEnter2D(Collision2D other)
   {
-    if (other.gameObject.tag == "Asteroid") {
+    if (other.gameObject.CompareTag("Asteroid"))
+    {
       return;
     }
     
-    if (other.gameObject.tag == "Bullet") {
-      if (other.gameObject.GetComponent<SpriteRenderer>().color == Color.green) {
-        IncreasePlayerScore();
-      }
-    other.gameObject.SetActive(false);
+    if (other.gameObject.GetComponent<Bullet>() != null && other.gameObject.GetComponent<Bullet>().GetBulletShooter() == player)
+    {
+      size--;
+      IncreasePlayerScore();
       if (size == Size.big || size == Size.medium)
         {
           CrackAsteroidInTwo();
@@ -65,39 +67,40 @@ public class Asteroid : MonoBehaviour
     switch (size)
     {
       case Size.big:
-        player.IncreaseScore(20);
+        playerController.IncreaseScore(20);
         break;
       case Size.medium:
-        player.IncreaseScore(50);
+        playerController.IncreaseScore(50);
         break;
       case Size.small:
-        player.IncreaseScore(100);
+        playerController.IncreaseScore(100);
         break;
     }
   }
 
-  private void SpawnSmallerAsteroid(Vector3 smallerAsteroidSpawnPosition, Vector2 smallerAsteroidMoveDirection) {
-      GameObject smallerAsteroid;
-      smallerAsteroid = ObjectPool.SharedInstance.GetPooledObject("Asteroids");
-      
-      smallerAsteroid.transform.position = smallerAsteroidSpawnPosition;
-      smallerAsteroid.transform.localScale = transform.localScale * 0.5f;
+  private void SpawnSmallerAsteroid(Vector3 smallerAsteroidSpawnPosition, Vector2 smallerAsteroidMoveDirection)
+  {
+    GameObject smallerAsteroid;
+    smallerAsteroid = ObjectPool.SharedInstance.GetPooledObject("Asteroids");
+    
+    smallerAsteroid.transform.position = smallerAsteroidSpawnPosition;
+    smallerAsteroid.transform.localScale = transform.localScale * 0.5f;
 
-      smallerAsteroid.SetActive(true);
-      smallerAsteroid.GetComponent<Rigidbody2D>().velocity = smallerAsteroidMoveDirection;
-    }
+    smallerAsteroid.SetActive(true);
+    smallerAsteroid.GetComponent<Rigidbody2D>().velocity = smallerAsteroidMoveDirection;
+  }
 
   private Vector3 GetAngleDirectionVector(float angle)
   {
-    Vector2 rotated_point;
+    Vector2 rotatedPoint;
     Vector2 fatherVelocity = rb.velocity.normalized;
-    rotated_point.x = fatherVelocity.x * Mathf.Cos(angle) - fatherVelocity.y * Mathf.Sin(angle);
-    rotated_point.y = fatherVelocity.x * Mathf.Sin(angle) + fatherVelocity.y * Mathf.Cos(angle);
-    return rotated_point;
+    rotatedPoint.x = fatherVelocity.x * Mathf.Cos(angle) - fatherVelocity.y * Mathf.Sin(angle);
+    rotatedPoint.y = fatherVelocity.x * Mathf.Sin(angle) + fatherVelocity.y * Mathf.Cos(angle);
+    return rotatedPoint;
   }
 
-  public void ResetSize() {
+  public void ResetSize()
+  {
     size = Size.big;
   }
-
 }

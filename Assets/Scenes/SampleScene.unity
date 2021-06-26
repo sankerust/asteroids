@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 37656714}
   - component: {fileID: 37656715}
   - component: {fileID: 37656716}
+  - component: {fileID: 37656717}
   m_Layer: 0
   m_Name: GameCore
   m_TagString: GameController
@@ -170,9 +171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseText: {fileID: 1011294599}
-  continueGameButton: {fileID: 1070621854}
-  newGameButton: {fileID: 1591391354}
-  quitButton: {fileID: 2044413456}
   controlSwitchButton: {fileID: 1646523083}
   playerController: {fileID: 947801186}
 --- !u!114 &37656715
@@ -205,10 +203,29 @@ MonoBehaviour:
   pools:
   - tag: Bullets
     prefab: {fileID: 6897211842886574045, guid: a4fec824471793f419753c1d7eea59bd, type: 3}
-    size: 15
+    size: 50
   - tag: Asteroids
     prefab: {fileID: 4374097926933568939, guid: 07649fd318da74346853ee1739859290, type: 3}
     size: 50
+--- !u!114 &37656717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 37656712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 691cd4ae5dd7fb349833ad0907e63857, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lifesLeftText: {fileID: 1374628534}
+  scoreText: {fileID: 1751840798}
+  pauseText: {fileID: 1011294599}
+  continueButton: {fileID: 1070621854}
+  newGameButton: {fileID: 1591391354}
+  controlSwitchButton: {fileID: 1646523083}
+  quitButton: {fileID: 2044413456}
 --- !u!1 &318729727
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,6 +322,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1acba603df5b0dc41acdac6b6192c50d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponRange: 40
 --- !u!1001 &513906020
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -358,11 +376,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402691, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: spawnRateCeil
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402691, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: spawnRateFloor
-      value: 20
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7116988542911402748, guid: 857e5cbc0d5051b48a80888aff2884f5, type: 3}
       propertyPath: m_Name
@@ -622,7 +640,7 @@ GameObject:
   - component: {fileID: 1070621857}
   - component: {fileID: 1070621856}
   m_Layer: 5
-  m_Name: ContinueGameButton
+  m_Name: ContinueButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1046,7 +1064,7 @@ GameObject:
   - component: {fileID: 1646523086}
   - component: {fileID: 1646523085}
   m_Layer: 5
-  m_Name: ControlScheme
+  m_Name: ControlSwitchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1666,6 +1684,10 @@ PrefabInstance:
       propertyPath: bulletSpeed
       value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 7817658413537121290, guid: 85ca338c6b1a9bc4c8fb3d97097dcbb6, type: 3}
+      propertyPath: uiController
+      value: 
+      objectReference: {fileID: 37656717}
     - target: {fileID: 7817658413537121290, guid: 85ca338c6b1a9bc4c8fb3d97097dcbb6, type: 3}
       propertyPath: lifesLeftText
       value: 
